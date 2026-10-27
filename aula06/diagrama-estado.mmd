@@ -1,0 +1,9 @@
+stateDiagram-v2
+    [*] --> AGUARDANDO_PAGAMENTO
+    AGUARDANDO_PAGAMENTO --> PAGO : pagar()
+    PAGO --> ENVIADO : enviar() / attCliente(), gerarNF()
+    ENVIADO --> ENTREGUE : confirmar() / attVendedores()
+    AGUARDANDO_PAGAMENTO --> CANCELADO : cancelar() / attEstoque()
+    PAGO --> CANCELADO : cancelar() / attEstoque(), estornar()
+    ENTREGUE --> [*]
+    CANCELADO --> [*]

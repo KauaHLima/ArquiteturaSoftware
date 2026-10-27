@@ -1,0 +1,12 @@
+sequenceDiagram
+    actor Usuário
+    participant Controller
+    participant Service
+    participant Repository
+
+    Usuário->>Controller: POST /products
+    Controller->>Service: create(product)
+    Service->>Repository: save(product)
+    Repository-->>Service: Product
+    Service-->>Controller: Product
+    Controller-->>Usuário: redirect /products
