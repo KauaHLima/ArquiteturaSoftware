@@ -1,0 +1,30 @@
+flowchart TD
+    Inicio(( )) --> A[Recebe formulário]
+    A --> B{Valor válido?}
+    B -- [sim] --> C[Cadastra produto]
+    B -- [não] --> D[Devolve erro]
+    C --> Fim(( ))
+    D --> Fim
+
+stateDiagram-v2
+    [*] --> AGUARDANDO_PAGAMENTO
+    AGUARDANDO_PAGAMENTO --> PAGO : pagar()
+    PAGO --> ENVIADO : enviar() / attCliente(), gerarNF()
+    ENVIADO --> ENTREGUE : confirmar() / attVendedores()
+    AGUARDANDO_PAGAMENTO --> CANCELADO : cancelar() / attEstoque()
+    PAGO --> CANCELADO : cancelar() / attEstoque(), estornar()
+    ENTREGUE --> [*]
+    CANCELADO --> [*]
+
+sequenceDiagram
+    actor Usuário
+    participant Controller
+    participant Service
+    participant Repository
+
+    Usuário->>Controller: POST /products
+    Controller->>Service: create(product)
+    Service->>Repository: save(product)
+    Repository-->>Service: Product
+    Service-->>Controller: Product
+    Controller-->>Usuário: redirect /products
